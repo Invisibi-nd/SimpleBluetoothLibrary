@@ -28,7 +28,7 @@ public class SimpleBluetooth {
     /**
      * Receiver for the {@code BluetoothBroadcastReceiver}
      */
-    private final BluetoothBroadcastReceiver.BroadcastCallback bluetoothBroadcastRecieverCallback
+    private final BluetoothBroadcastReceiver.BroadcastCallback bluetoothBroadcastReceiverCallback
             = new BluetoothBroadcastReceiver.BroadcastCallback() {
         @Override
         public void onBluetoothEnabled() {
@@ -44,47 +44,47 @@ public class SimpleBluetooth {
     /**
      * Receiver for the {@code BluetoothStateReceiver}
      */
-    private final BluetoothStateReceiver.Callback stateRecieverCallback = new BluetoothStateReceiver.Callback() {
+    private final BluetoothStateReceiver.Callback stateReceiverCallback = new BluetoothStateReceiver.Callback() {
         @Override
         public void onDeviceConnected(BluetoothDevice device) {
-            if(mListener != null) {
+            if (mListener != null) {
                 mListener.onDeviceConnected(device);
             }
         }
 
         @Override
         public void onDeviceDisconnected(BluetoothDevice device) {
-            if(mListener != null) {
+            if (mListener != null) {
                 mListener.onDeviceDisconnected(device);
             }
         }
 
         @Override
         public void onDiscoveryFinished() {
-            if(mListener != null) {
+            if (mListener != null) {
                 mListener.onDiscoveryFinished();
             }
         }
 
         @Override
         public void onDiscoveryStarted() {
-            if(mListener != null) {
+            if (mListener != null) {
                 mListener.onDiscoveryStarted();
             }
         }
     };
 
-    private final BluetoothPairingReceiver.Callback bluetoothPairingReciever = new BluetoothPairingReceiver.Callback() {
+    private final BluetoothPairingReceiver.Callback pairingReceiverCallback = new BluetoothPairingReceiver.Callback() {
         @Override
         public void onDevicePaired(BluetoothDevice device) {
-            if(mListener != null) {
+            if (mListener != null) {
                 mListener.onDevicePaired(device);
             }
         }
 
         @Override
         public void onDeviceUnpaired(BluetoothDevice device) {
-            if(mListener != null) {
+            if (mListener != null) {
                 mListener.onDeviceUnpaired(device);
             }
         }
@@ -163,6 +163,7 @@ public class SimpleBluetooth {
     /**
      * Constructor for {@code SimpleBluetooth}
      * Allows for easy handling for setting up connections and bluetooth servers to connect to.
+     *
      * @param context context from the calling activity
      */
     public SimpleBluetooth(Context context, SimpleBluetoothListener listener) {
@@ -176,10 +177,10 @@ public class SimpleBluetooth {
         //register the state change receiver.
         this.curType = InputStreamType.NORMAL;
         this.bluetoothStateReceiver = BluetoothStateReceiver
-                .register(mContext, stateRecieverCallback);
+                .register(mContext, stateReceiverCallback);
 
         this.bluetoothPairingReceiver = BluetoothPairingReceiver
-                .register(mContext, bluetoothPairingReciever);
+                .register(mContext, pairingReceiverCallback);
         //state boolean
         this.isInitialized = false;
     }
@@ -187,6 +188,7 @@ public class SimpleBluetooth {
     /**
      * Constructor for {@code SimpleBluetooth} Use this constructor to provide your own custom bluetooth
      * handler.
+     *
      * @param context the context of the calling activity.
      * @param handler custom {@code BluetoothHandler} for bluetooth event call backs.
      */
@@ -197,14 +199,14 @@ public class SimpleBluetooth {
         this.customHandler = handler;
         this.curType = InputStreamType.NORMAL;
         //check the handler.
-        if(customHandler == null) throw
+        if (customHandler == null) throw
                 new NullPointerException("Custom BluetoothHandler cannot be null!");
         this.bluetoothUtility = new BluetoothUtility(mContext, customHandler);
         //register the state change receiver.
         this.bluetoothStateReceiver = BluetoothStateReceiver
-                .register(mContext, stateRecieverCallback);
+                .register(mContext, stateReceiverCallback);
         this.bluetoothPairingReceiver = BluetoothPairingReceiver
-                .register(mContext, bluetoothPairingReciever);
+                .register(mContext, pairingReceiverCallback);
         //state boolean
         this.isInitialized = false;
     }
@@ -212,6 +214,7 @@ public class SimpleBluetooth {
     /**
      * Sets a simple bluetooth listener for this service. Use this in your activity to get back the
      * read data.
+     *
      * @param simpleBluetoothListener the new simple bluetooth listener
      */
     public void setSimpleBluetoothListener(SimpleBluetoothListener simpleBluetoothListener) {
@@ -220,6 +223,7 @@ public class SimpleBluetooth {
 
     /**
      * Sets the input stream type for reading data from the bluetooth device.
+     *
      * @param type the {@code InputStreamType}, can either be Normal or Buffered.
      */
     public void setInputStreamType(InputStreamType type) {
@@ -228,6 +232,7 @@ public class SimpleBluetooth {
 
     /**
      * Set whether or not messages should be shown with snackbars.
+     *
      * @param show true to show them, false otherwise.
      */
     public void setShouldShowSnackbars(boolean show) {
@@ -240,7 +245,7 @@ public class SimpleBluetooth {
      * Method that must be called to set everything up for this class.
      */
     public boolean initializeSimpleBluetooth() {
-        if(!bluetoothUtility.checkIfEnabled()) {
+        if (!bluetoothUtility.checkIfEnabled()) {
             bluetoothUtility.enableBluetooth();
         } else {
             isInitialized = true;
@@ -251,10 +256,11 @@ public class SimpleBluetooth {
     /**
      * Method that must be called (or initializeSimpleBluetooth()) to setup
      * the simplebluetooth class.
+     *
      * @return
      */
     public boolean initializeSimpleBluetoothSilent() {
-        if(!bluetoothUtility.checkIfEnabled()) {
+        if (!bluetoothUtility.checkIfEnabled()) {
             bluetoothUtility.enableBluetoothSilent();
         } else {
             isInitialized = true;
@@ -265,6 +271,7 @@ public class SimpleBluetooth {
 
     /**
      * Sends data to the connected device.
+     *
      * @param data The string of data to send.
      */
     public void sendData(String data) {
@@ -274,6 +281,7 @@ public class SimpleBluetooth {
 
     /**
      * Sends data to the connected device.
+     *
      * @param data the int to send.
      */
     public void sendData(int data) {
@@ -282,6 +290,7 @@ public class SimpleBluetooth {
 
     /**
      * Sends byte array data to the connected bluetooth device.
+     *
      * @param data the data to send.
      */
     public void sendData(byte[] data) {
@@ -290,13 +299,14 @@ public class SimpleBluetooth {
 
     /**
      * Starts the device dialog to get a device to connect to.
+     *
      * @param requestCode the request code for the intent. Use this to check against in
      *                    OnActivityResult.
      */
     public void scan(int requestCode) {
         Intent deviceDialog = new Intent(mContext, DeviceDialog.class);
-        if(mContext instanceof Activity) {
-            ((Activity)mContext).startActivityForResult(deviceDialog, requestCode);
+        if (mContext instanceof Activity) {
+            ((Activity) mContext).startActivityForResult(deviceDialog, requestCode);
         }
     }
 
@@ -314,15 +324,16 @@ public class SimpleBluetooth {
      * Cancels the ongoing scan started by {@code scan()}
      */
     public void cancelScan() {
-       bluetoothUtility.cancelScan();
+        bluetoothUtility.cancelScan();
     }
 
     /**
      * Connect to the bluetooth device knowing only the macAddress.
+     *
      * @param macAddress the mac address of the device. If this isn't valid, it won't connect.
      */
     public void connectToBluetoothDevice(String macAddress) {
-        if(!isInitialized) {
+        if (!isInitialized) {
             throw new IllegalStateException("Must initialize before using any other method in class" +
                     "SimpleBluetooth! Call initializeSimpleBluetooth()");
         } else {
@@ -333,10 +344,11 @@ public class SimpleBluetooth {
 
     /**
      * Connect to a generic bluetooth device.
+     *
      * @param device Bluetooth device representing the device.
      */
     public void connectToBluetoothDevice(BluetoothDevice device) {
-        if(!isInitialized) {
+        if (!isInitialized) {
             throw new IllegalStateException("Must initialize before using any other method in class" +
                     "SimpleBluetooth! Call initializeSimpleBluetooth()");
         }
@@ -347,7 +359,7 @@ public class SimpleBluetooth {
      * Creates a bluetooth server on this device that awaits for a client to connect.
      */
     public void createBluetoothServerConnection() {
-        if(!isInitialized) {
+        if (!isInitialized) {
             throw new IllegalStateException("Must initialize before using any other method in class" +
                     "SimpleBluetooth! Call initializeSimpleBluetooth()");
         } else {
@@ -358,10 +370,11 @@ public class SimpleBluetooth {
 
     /**
      * Connects to a bluetooth server set up on another device.
+     *
      * @param macAddress the mac address of the server device. If this isn't valid, it won't connect.
      */
     public void connectToBluetoothServer(String macAddress) {
-        if(!isInitialized) {
+        if (!isInitialized) {
             throw new IllegalStateException("Must initialize before using any other method in class" +
                     "SimpleBluetooth! Call initializeSimpleBluetooth()");
         } else {
@@ -373,10 +386,11 @@ public class SimpleBluetooth {
 
     /**
      * Connects to an A2DP device.
+     *
      * @param deviceName the name of the device to connect to.
      */
     public void connectToA2DPDevice(String deviceName) {
-        if(!isInitialized) {
+        if (!isInitialized) {
             throw new IllegalStateException("Must initialize before using any other method in class" +
                     "SimpleBluetooth. Call initializeSimpleBluetooth()");
         } else {
@@ -387,6 +401,7 @@ public class SimpleBluetooth {
 
     /**
      * Makes the device discoverable to other devices for a certain amount of time.
+     *
      * @param duration the duration length in seconds.
      */
     public void makeDiscoverable(int duration) {
@@ -406,6 +421,7 @@ public class SimpleBluetooth {
 
     /**
      * Gets the used bluetooth utility.
+     *
      * @return the {@code BluetoothUtility}
      */
     public BluetoothUtility getBluetoothUtility() {
