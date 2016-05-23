@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
@@ -769,7 +770,7 @@ public class BluetoothUtility implements BluetoothProfile.ServiceListener {
                         bytes = mInputStream.read(buffer);
                         // Send the obtained bytes to the UI activity
                         //order is what, arg1, arg2, obj
-                        bluetoothHandler.obtainMessage(BluetoothHandler.MESSAGE_READ, bytes, -1, buffer)
+                        bluetoothHandler.obtainMessage(BluetoothHandler.MESSAGE_READ, bytes, -1, Arrays.copyOf(buffer, bytes))
                                 .sendToTarget();
                     } catch (IOException e) {
                         break;
