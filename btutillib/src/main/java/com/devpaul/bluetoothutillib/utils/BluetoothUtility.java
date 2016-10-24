@@ -477,7 +477,7 @@ public class BluetoothUtility implements BluetoothProfile.ServiceListener {
      *
      * @param data the data to send.
      */
-    public void sendData(byte[] data) {
+    public void sendData(byte[] data) throws IOException {
         //check to see if the socket is connected first.
         if (bluetoothSocket != null) {
             if (bluetoothSocket.isConnected()) {
@@ -821,13 +821,9 @@ public class BluetoothUtility implements BluetoothProfile.ServiceListener {
          *
          * @param bytes the bytes to send.
          */
-        public void write(byte[] bytes) {
+        public void write(byte[] bytes) throws IOException {
             if (mOutputStream != null) {
-                try {
-                    mOutputStream.write(bytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                mOutputStream.write(bytes);
             }
         }
 
