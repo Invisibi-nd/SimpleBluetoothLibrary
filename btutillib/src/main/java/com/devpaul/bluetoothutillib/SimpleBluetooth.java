@@ -16,6 +16,8 @@ import com.devpaul.bluetoothutillib.handlers.DefaultBluetoothHandler;
 import com.devpaul.bluetoothutillib.utils.BluetoothUtility;
 import com.devpaul.bluetoothutillib.utils.SimpleBluetoothListener;
 
+import java.io.IOException;
+
 import static com.devpaul.bluetoothutillib.utils.BluetoothUtility.InputStreamType;
 
 /**
@@ -293,7 +295,7 @@ public class SimpleBluetooth {
      *
      * @param data the data to send.
      */
-    public void sendData(byte[] data) {
+    public void sendData(byte[] data) throws IOException {
         bluetoothUtility.sendData(data);
     }
 
